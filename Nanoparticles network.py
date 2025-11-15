@@ -6,9 +6,8 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import os
 
-# -------------------------
 # Argument parsing with Jupyter safety
-# -------------------------
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--n_particles", type=int, default=500, help="number of nanoparticles")
@@ -18,9 +17,8 @@ def parse_args():
     args, _ = parser.parse_known_args(sys.argv[1:])
     return args
 
-# -------------------------
 # Mesoscale network generator
-# -------------------------
+
 def generate_network(n_particles, box, seed):
     np.random.seed(seed)
     positions = np.random.rand(n_particles, 2) * box
@@ -36,9 +34,8 @@ def generate_network(n_particles, box, seed):
                 G.add_edge(i, j, weight=weight)
     return G, positions
 
-# -------------------------
 # Fourier-based heterogeneity analysis
-# -------------------------
+
 def fourier_filter(positions, box, resolution=128):
     grid = np.zeros((resolution, resolution))
     scaled = (positions / box * resolution).astype(int)
@@ -48,9 +45,8 @@ def fourier_filter(positions, box, resolution=128):
     spectrum = np.abs(fft_image)
     return grid, spectrum
 
-# -------------------------
 # Visualization & Animation
-# -------------------------
+
 def visualize(G, positions, spectrum, outdir):
     os.makedirs(outdir, exist_ok=True)
 
@@ -87,9 +83,8 @@ def visualize(G, positions, spectrum, outdir):
     anim.save(anim_path, writer='pillow', fps=15)
     plt.close(fig)
 
-# -------------------------
 # Main logic
-# -------------------------
+
 def main(n_particles=None, box=None, seed=None, outdir=None):
     if n_particles is None and box is None and seed is None:
         args = parse_args()
